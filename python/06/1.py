@@ -90,6 +90,7 @@ def simulate(filename):
         else:
             ## Now we need to simulate if we can get into the same state by adding a # in this cell
             if simulate_trap(grid, obstacles, player_location, state, direction,next_position,visited_cells):
+               print(next_position)
                number_of_posible_traps += 1
            
             player_location = next_position
