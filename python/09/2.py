@@ -1,4 +1,5 @@
 from collections import defaultdict
+import time
 
 def read_file(filename):
     with open(filename) as f:
@@ -7,6 +8,7 @@ def read_file(filename):
     # Convert the input into a list of integers
     data = [int(num) for num in input_data]
     return data
+start_time = time.time()
 
 data = read_file('input.txt')
 
@@ -60,5 +62,9 @@ answer = 0
 for file_id, (start, length) in grid.items():
     contribution = start * length + (length * (length - 1)) // 2
     answer += file_id * contribution
+end_time = time.time()
 
 print(answer) ## 2858
+elapsed_time_ms = (end_time - start_time) * 1000
+
+print(f"Elapsed time: {elapsed_time_ms} milliseconds")
