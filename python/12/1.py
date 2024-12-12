@@ -38,7 +38,6 @@ for row in range(rows):
         queue = deque([(row, col)])
         group_area = 0
         group_perimeter = 0
-        direction_perimeters = {}
         current_letter = ''
         # BFS 
         while queue:
@@ -59,9 +58,6 @@ for row in range(rows):
                     queue.append((next_row, next_col))
                 else:
                     group_perimeter += 1
-                    if (dr, dc) not in direction_perimeters:
-                        direction_perimeters[(dr, dc)] = set()
-                    direction_perimeters[(dr, dc)].add((current_row, current_col))
         # A = 40
         # B = 32
         # C = 40
