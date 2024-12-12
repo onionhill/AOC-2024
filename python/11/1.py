@@ -38,7 +38,6 @@ def part1():
         for rock, count in rock_counts.items():
             for new_rock in blink(rock):
                 new_rock_counts[new_rock] += count
-        
         rock_counts = new_rock_counts
     return sum(rock_counts.values())
 
@@ -51,7 +50,6 @@ def part2():
         for rock, count in rock_counts.items():
             for new_rock in blink(rock):
                 new_rock_counts[new_rock] += count
-        
         rock_counts = new_rock_counts
     return sum(rock_counts.values())
 
