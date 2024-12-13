@@ -8,7 +8,7 @@ def read_file(file_path):
         input_text = file.read()
     return input_text
 
-def parse_rounds(input_text, offset):
+def parse_rounds(input_text, offsett):
     # Split the input into blocks
     blocks = input_text.strip().split("\n\n")
     rounds = []
@@ -33,75 +33,65 @@ def parse_rounds(input_text, offset):
         # Target locations
         target_data = lines[2].split(":")[1].strip().split(", ")
         target = {
-            "x": int(target_data[0].split("=")[1]) + offset,
-            "y": int(target_data[1].split("=")[1]) + offset
+            "x": int(target_data[0].split("=")[1]) + offsett,
+            "y": int(target_data[1].split("=")[1]) + offsett
         }
         
         rounds.append({"button_a": button_a, "button_b": button_b, "target": target})
     
     return rounds
 
+
 def solve_round(round):
-    min_cost = float("inf")
-    best_a_presses, best_b_presses = 0, 0
     button_a = round['button_a']
     button_b = round['button_b']
-    button_a_cost = 3
-    button_b_cost = 1
     target = round['target']
+    # 94a + 22b = 8400
+    # 34a + 67b = 5400
+    ## Ganger den første med 67 på begge sider, den andre med 22 (Verdien for B)
+    # 67 ×( 94a + 22b)= 67 × 8400 ==  6298a + 1474b = 562 800
+    # 22 x( 34a + 67b)= 22 x 5400 ==  748a + 1474b = 118 800
+
+    # Trekk fra ligning 1 i ligning 2
+    # 6298a + 1474b - 748a - 1474b = 
+    # 5550a = 444 000 = 80
     
-    # 
-    for a_presses in range(target['x'] // button_a["x"] + 1):
-        
-        remaining_x = target['x'] - a_presses * button_a["x"]
-        remaining_y = target['y'] - a_presses * button_a["y"]
+    # Setter inn 80 for A ligning 2
+    # 34*80 + 67b = 5400 ==  2720 + 67b = 5400 == 57b = 2680 
+    # b = 40
+    A1, B1, C1 = button_a['x'], button_b['x'], target['x'] # 94,22,8400
+    A2, B2, C2 = button_a['y'], button_b['y'], target['y'] # 34,67,5400
+    eq1_multiplied = (A1 * B2, B1 * B2, C1 * B2)  # (6298(a),1474(b),562800)
+    eq2_multiplied = (A2 * B1, B2 * B1, C2 * B1)  # (748(a),1474b(b),118800)
 
-        
-        if remaining_x >= 0 and remaining_y >= 0:
-            
-            if remaining_x % button_b["x"] == 0 and remaining_y % button_b["y"] == 0:
-                b_presses_x = remaining_x // button_b["x"]
-                b_presses_y = remaining_y // button_b["y"]
+    a_coefficient = eq1_multiplied[0] - eq2_multiplied[0] # 6298a - 748a
+    b_coefficient = eq1_multiplied[1] - eq2_multiplied[1] # 1474b - 1474b = 0 
+    result = eq1_multiplied[2] - eq2_multiplied[2]  # 562800 - 118800
 
-                
-                if b_presses_x == b_presses_y:
-                    b_presses = b_presses_x
-                    total_cost = a_presses * button_a_cost + b_presses * button_b_cost
+    a = result / a_coefficient # 562 800 - 118 800 
+    b = (C1 - A1 * a) / B1 ## b = (8400 - (94 * 80) ) / 22 =  40
 
-                    
-                    if total_cost < min_cost:
-                        min_cost = total_cost
-                        best_a_presses, best_b_presses = a_presses, b_presses
-
-    return min_cost, best_a_presses, best_b_presses
-
+    return a, b
 
 total_cost_1 = 0
 total_cost_2 = 0
 number_of_wins_1 = 0
 number_of_wins_2 = 0
-rounds_1 = parse_rounds(read_file('input.txt'),0)
-rounds_2 = parse_rounds(read_file('input.txt'),10000000000000)
-for i, round in enumerate(rounds_1, start=1):
-    print(f"Part 1, Problem{i}")
-    min_cost, best_a_presses, best_b_presses = solve_round(round)
-    if min_cost < float("inf"):
-        total_cost_1 += min_cost
-        number_of_wins_1 += 1
-    #else:
-       # print("No solution found.")
-print(f"Round 1: Toatl cost to win {number_of_wins_1} prices: {total_cost_1}")
+rounds = parse_rounds(read_file('input.txt'),0)
+for i, round in enumerate(rounds, start=1):
+    a,b = solve_round(round)
+    if a == int(a) and b == int(b):
+        total_cost_1 += int(a*3 + b)
 
-for i, round in enumerate(rounds_2, start=1):
-    
-    print(f"Part 2, Problem{i}")
-    min_cost, best_a_presses, best_b_presses = solve_round(round)
-    if min_cost < float("inf"):
-        total_cost_2 += min_cost
-        number_of_wins_2 += 1
-   # else:
-       # print("No solution found.")
+rounds2 = parse_rounds(read_file('input.txt'), 10000000000000)
+for i, round in enumerate(rounds2, start=1):
+    a,b = solve_round(round)
+    if a == int(a) and b == int(b):
+        total_cost_2 += int(a*3 + b)
 
-print(f"Round 2: Toatl cost to win {number_of_wins_2} prices: {total_cost_2}")
+print(f"Round 1: Total cost to win {number_of_wins_1} prices: {total_cost_1}") # 35729
+print(f"Round 2: Total cost to win {number_of_wins_2} prices: {total_cost_2}") # 88584689879723
+end_time = time.time()
 
-
+elapsed_time_ms = (end_time - start_time) * 1000
+print(f"Elapsed time: {elapsed_time_ms} milliseconds")
