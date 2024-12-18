@@ -1,5 +1,6 @@
-import sys
+import time
 from collections import deque
+start_time = time.time()
 
 
 def read_file(filename):
@@ -20,7 +21,7 @@ directions = [
 part1 = 0
 part2 = 0
 
-grid = read_file('small-sample.txt')
+grid = read_file('input.txt')
 
 rows = len(grid)
 columns = len(grid[0])
@@ -107,7 +108,7 @@ for row in range(rows):
         # D = 1 * 4 = 4
         # E = 3 * 4 = 12
         
-        print(f"{current_letter} Area:{group_area} * Sides:{sides} = Price {group_area*sides}")
+       # print(f"{current_letter} Area:{group_area} * Sides:{sides} = Price {group_area*sides}")
         
         part2 += group_area * sides
     
@@ -117,3 +118,7 @@ for row in range(rows):
 
 print(part1) ## 140 / 1363682
 print(part2) ## 80
+end_time = time.time()
+
+elapsed_time_ms = (end_time - start_time) * 1000
+print(f"Elapsed time: {elapsed_time_ms} milliseconds")

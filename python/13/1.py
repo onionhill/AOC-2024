@@ -77,13 +77,14 @@ total_cost_1 = 0
 total_cost_2 = 0
 number_of_wins_1 = 0
 number_of_wins_2 = 0
-rounds = parse_rounds(read_file('input.txt'),0)
+input_file = read_file('input.txt')
+rounds = parse_rounds(input_file,0)
 for i, round in enumerate(rounds, start=1):
     a,b = solve_round(round)
     if a == int(a) and b == int(b):
         total_cost_1 += int(a*3 + b)
 
-rounds2 = parse_rounds(read_file('input.txt'), 10000000000000)
+rounds2 = parse_rounds(input_file, 10000000000000)
 for i, round in enumerate(rounds2, start=1):
     a,b = solve_round(round)
     if a == int(a) and b == int(b):
