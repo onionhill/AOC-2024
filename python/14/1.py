@@ -1,6 +1,8 @@
+import time
 import re
 from itertools import count
 from math import prod
+start_time = time.time()
 
 
 def read_file(file_path):
@@ -73,3 +75,7 @@ def part_two():
 
 print(f"Part 1: {part_one()}") # 222901875
 print(f"Part 2: {part_two()}") # 6243
+
+end_time = time.time()
+elapsed_time_ms = (end_time - start_time) * 1000
+print(f"Elapsed time: {elapsed_time_ms} milliseconds")
