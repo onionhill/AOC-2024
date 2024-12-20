@@ -43,9 +43,7 @@ for y,x in track:
 
         if next_pos not in track and next_next_pos in track and track[next_next_pos] - track[current_pos] >= 101:
             count += 1
-            print(next_pos, track[next_next_pos] - track[current_pos] )
-print(count)
-
+print(f"Part 1: {count} ") #1417
 
 
 
